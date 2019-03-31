@@ -1,6 +1,10 @@
 import kinect4WinSDK.Kinect;
 import kinect4WinSDK.SkeletonData;
 
+String scene;
+ArrayList<PVector> positions = new ArrayList<PVector>();
+Scene scene1;
+
 Kinect kinect;
 ArrayList <SkeletonData> bodies;
 
@@ -11,19 +15,34 @@ void setup()
   kinect = new Kinect(this);
   smooth();
   bodies = new ArrayList<SkeletonData>();
+  
+  positions.add(new PVector(width/2,height/2));
+  positions.add(new PVector(width/3,height/3));
+  positions.add(new PVector(50,350));
+ 
+  scene1 = new Scene(positions,175);
+ 
+  scene = "scene1";
 }
 
 void draw()
 {
-  background(0);
-  for (int i=0; i<bodies.size (); i++) 
-  {
-    drawSkeleton(bodies.get(i));
-    drawPosition(bodies.get(i));
-    drawAtPosition(bodies.get(i));    
-  }
-  fill(255);
   
+  switch(scene){
+    case "scene1":
+        scene1.drawStatic();
+        break;
+    case "scene2":
+        background(0);
+        for (int i=0; i<bodies.size (); i++) 
+            {
+              drawSkeleton(bodies.get(i));
+              drawPosition(bodies.get(i));
+              drawAtPosition(bodies.get(i));    
+            }
+        break;
+  }
+   
 }
 
 void drawAtPosition(SkeletonData _s)
@@ -173,4 +192,8 @@ void moveEvent(SkeletonData _b, SkeletonData _a)
       }
     }
   }
+}
+
+void mousePressed(){
+  scene = scene == "scene1" ? "scene2" : "scene1";
 }
